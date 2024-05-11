@@ -1,0 +1,30 @@
+name: Daily Crypto Scraper
+
+on:
+  schedule:
+    - cron: '0 12 * * *'  # Exécute le script tous les jours à 12h00 UTC
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest  # Définit l'environnement d'exécution
+
+    steps:
+      - uses: actions/checkout@v2  # Checkout votre code
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'  # Spécifiez la version Python à utiliser
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Run scraper
+        run: python path/to/your_script.py  # Remplacez par le chemin vers votre script
+
+      - name: Upload Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: scrape-results
+          path: path/to/output_file.csv  # Spécifiez le chemin vers le fichier de sortie de votre script
